@@ -14,3 +14,8 @@ django-admin startapp myauth
 - 注册 app
 - 添加 urls、views
 - 新建templates文件 添加html
+2. 登录页面
+```
+app_name = 'myauth' # 添加网站名称
+<a href="{% url 'myauth:home' %}">返回 主页</a>
+```
