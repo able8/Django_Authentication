@@ -19,3 +19,22 @@ django-admin startapp myauth
 app_name = 'myauth' # 添加网站名称
 <a href="{% url 'myauth:home' %}">返回 主页</a>
 ```
+3. 登录逻辑
+- 迁移用户表
+```sh
+python manage.py migrate
+```
+- 创建Django admin 超级账号
+```
+python manage.py createsuperuser # able  ableable
+```
+- 登录验证
+```python
+if request.method == 'POST':
+        user = django.contrib.auth.authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        if user is None:
+            return render(request, 'myauth/login.html', {'error': 'userinfo error'})
+        else:
+            django.contrib.auth.login(request, user)
+            return redirect('myauth:home')
+```
