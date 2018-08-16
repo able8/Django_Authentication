@@ -17,3 +17,7 @@ def login(request):
             return redirect('myauth:home')
     else:
         return render(request, 'myauth/login.html')
+
+def logout(request):
+    django.contrib.auth.logout(request)
+    return redirect('myauth:home')

@@ -38,3 +38,17 @@ if request.method == 'POST':
             django.contrib.auth.login(request, user)
             return redirect('myauth:home')
 ```
+4. 退出账号
+- logout
+```python
+def logout(request):
+    django.contrib.auth.logout(request)
+    return redirect('myauth:home')
+```
+```html
+    {% if user.is_authenticated %}
+        <a href="{% url 'myauth:logout' %}">退出</a>
+    {% else %}
+        <a href="{% url 'myauth:login' %}">登录</a>
+    {% endif %}
+```
