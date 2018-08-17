@@ -10,3 +10,8 @@ class CustomUserForm(UserCreationForm):
         model = User
         fields = ('username', 'password1', 'email', '昵称', '生日')
         # fields = ('username', 'password1', 'email', 'nikename', 'birthday')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].error_messages = {'unique': '用户名已存在！！！', 'invalid': '格式不对！'}
+
