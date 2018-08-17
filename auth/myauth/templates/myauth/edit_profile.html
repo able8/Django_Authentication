@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>个人中心</h1>
+    <a href="{% url 'myauth:home' %}">回到主页</a>
+    <a href="{% url 'myauth:user_center' %}">回到个人中心</a>
+    <a href="{% url 'myauth:edit_profile' %}">编辑个人信息</a>
+    <a href="{% url 'myauth:change_password' %}">修改密码</a>
+    <a href="{% url 'myauth:logout' %}">退出</a>
+
+    {{ editform.errors }}
+
+    <form action="" method="POST">
+        {% csrf_token %} 
+        <!-- {{ editform.as_p }} -->
+
+        <p><label for="id_username">用户名:</label> <input type="text" name="username" value="{{ user.username }}" maxlength="150" required
+                id="id_username" /> <span class="helptext">必填。150个字符或者更少。包含字母，数字和仅有的@/./+/-/_符号。</span></p>
+
+        <p><label for="id_email">电子邮件地址:</label> <input type="email" name="email" value="{{ user.email }}" maxlength="254" id="id_email"
+            /></p>
+        <p><label for="id_昵称">昵称:</label> <input type="text" name="nickname" value="{{ user.commonuserform.nickename }}" maxlength="50"
+                id="id_昵称" /></p>
+        <!-- <p><label for="id_生日">生日:</label> <input type="date" name="birthday" value="{{ user.commonuserform.birthday }}" id="id_生日"/></p> -->
+        <button type="submit">提交</button>
+    </form>
+
+</body>
+
+</html>
