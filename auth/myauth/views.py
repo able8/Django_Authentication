@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
+
 import django.contrib.auth
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from .forms import CustomUserForm, CustomEditForm
 from .models import CommonUserForm
 
@@ -32,10 +33,15 @@ def edit_profile(request):
 @login_required(login_url='myauth:login')
 def change_password(request):
     if request.method == 'POST':
-        return redirect('myauth:user_center')
-    else: 
-        return render(request, 'myauth/change_password.html')
+        changepwdform = PasswordChangeForm(data=request.POST, user=request.user)
+        if changepwdform.is_valid():
+            changepwdform.save()
+            return redirect('myauth:login')
+    else:
+        changepwdform = PasswordChangeForm(user=request.user) 
 
+    content = {'changepwdform': changepwdform, 'user':request.user}
+    return render(request, 'myauth/change_password.html', content)
 
 def home(request):
     return render(request, 'myauth/home.html')

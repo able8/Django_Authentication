@@ -54,7 +54,7 @@ def logout(request):
 ```
 
 5. 注册
-
+```
 from django.contrib.auth.forms import UserCreationForm
 
 python manage.py makemigrations
@@ -63,7 +63,7 @@ python manage.py migrate
 LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Shanghai'
-
+```
 6. 自定义错误信息
 ```python
 def __init__(self, *args, **kwargs):
@@ -86,3 +86,23 @@ def user_center(request):
     return render(request, 'myauth/user_center.html', content)
 ```
 8. 修改个人信息
+9. 修改密码
+
+
+
+```python
+@login_required(login_url='myauth:login')
+def change_password(request):
+    if request.method == 'POST':
+        changepwdform = PasswordChangeForm(data=request.POST, user=request.user)
+        if changepwdform.is_valid():
+            changepwdform.save()
+            return redirect('myauth:login')
+    else:
+        changepwdform = PasswordChangeForm(user=request.user) 
+
+    content = {'changepwdform': changepwdform, 'user':request.user}
+    return render(request, 'myauth/change_password.html', content)
+```
+
+
