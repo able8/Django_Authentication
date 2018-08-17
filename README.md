@@ -52,3 +52,6 @@ def logout(request):
         <a href="{% url 'myauth:login' %}">登录</a>
     {% endif %}
 ```
+
+
+from django.contrib.auth.forms import UserCreationForm

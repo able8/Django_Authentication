@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import django.contrib.auth
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
@@ -21,3 +22,19 @@ def login(request):
 def logout(request):
     django.contrib.auth.logout(request)
     return redirect('myauth:home')
+
+
+def register(request):
+    if request.method == 'POST':
+        userform = UserCreationForm(request.POST)
+        if userform.is_valid():
+            # 创建用户
+            # user = django.contrib.auth.authenticate(request,username=userform.cleaned_data['username'], password=userform.cleaned_data['password1'])
+            user = userform.save()
+            django.contrib.auth.login(request, user)
+            return redirect('myauth:home')
+    else:
+        userform = UserCreationForm() # empty form
+
+    content = {'register_form': userform}
+    return render(request, 'myauth/register.html', content)
