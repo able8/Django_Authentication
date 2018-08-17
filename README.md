@@ -53,5 +53,13 @@ def logout(request):
     {% endif %}
 ```
 
+5. 注册
 
 from django.contrib.auth.forms import UserCreationForm
+
+python manage.py makemigrations
+python manage.py migrate
+
+LANGUAGE_CODE = 'zh-hans'
+
+TIME_ZONE = 'Asia/Shanghai'
