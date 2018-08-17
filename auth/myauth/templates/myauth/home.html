@@ -10,6 +10,7 @@
     <h1>home</h1>
     <!-- {{ user.is_authenticated }} -->
     {% if user.is_authenticated %}
+        <a href="{% url 'myauth:user_center' %}">个人中心</a>
         <a href="{% url 'myauth:logout' %}">退出</a>
     {% else %}
         <a href="{% url 'myauth:login' %}">登录</a>

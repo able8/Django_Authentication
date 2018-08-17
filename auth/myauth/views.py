@@ -3,11 +3,32 @@ import django.contrib.auth
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserForm
 from .models import CommonUserForm
-# Create your views here.
+
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='myauth:login')
+def user_center(request):
+    # print(dir(request.user))
+    content = { 'user': request.user}
+    return render(request, 'myauth/user_center.html', content)
+
+@login_required(login_url='myauth:login')
+def edit_profile(request):
+    if request.method == 'POST':
+        return redirect('myauth:user_center')
+    else:
+        return render(request, 'myauth/edit_profile.html')
+
+@login_required(login_url='myauth:login')
+def change_password(request):
+    if request.method == 'POST':
+        return redirect('myauth:user_center')
+    else: 
+        return render(request, 'myauth/change_password.html')
+
 
 def home(request):
     return render(request, 'myauth/home.html')
-
 
 def login(request):
     if request.method == 'POST':
@@ -33,7 +54,7 @@ def register(request):
             # user = django.contrib.auth.authenticate(request,username=userform.cleaned_data['username'], password=userform.cleaned_data['password1'])
             user = userform.save()
             user.email = userform.cleaned_data['email']
-            CommonUserForm(user=user, nikename=userform.cleaned_data['昵称'], birthday=userform.cleaned_data['生日']).save()
+            CommonUserForm(user=user, nikename=userform.cleaned_data['nickname'], birthday=userform.cleaned_data['birthday']).save()
             django.contrib.auth.login(request, user)
             return redirect('myauth:home')
     else:

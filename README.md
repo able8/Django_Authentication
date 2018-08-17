@@ -69,7 +69,7 @@ TIME_ZONE = 'Asia/Shanghai'
 def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['username'].error_messages = {'unique': '用户名已存在！！！', 'invalid': '格式不对！'}
-``
+```
 ```js
     {% if register_form.errors.username %}
     <p>用户名已存在或格式不符合要求</p>
@@ -77,3 +77,12 @@ def __init__(self, *args, **kwargs):
     <!-- {{ register_form.errors.username.as_jon }} -->
     {% endif %}
 ```
+7. 个人中心
+```python
+@login_required(login_url='myauth:login')
+def user_center(request):
+    # print(dir(request.user))
+    content = { 'user': request.user}
+    return render(request, 'myauth/user_center.html', content)
+```
+8. 修改个人信息
