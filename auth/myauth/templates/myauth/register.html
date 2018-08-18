@@ -51,8 +51,12 @@
     <p>{{ register_form.errors.email }} </p>
     <p><label for="id_昵称">昵称:</label> <input type="text" name="nickname" maxlength="50" id="id_昵称" /></p>
     <p>{{ register_form.errors.昵称 }} </p>
-    <p><label for="id_生日">生日:</label> <input type="date" name="birthday" id="id_生日" /></p>
-    <p>{{ register_form.errors.生日 }} </p>
+
+    {% comment %} <p><label for="id_生日">生日:</label> <input type="date" name="birthday" id="id_生日" /></p>
+    <p>{{ register_form.errors.生日 }} </p> {% endcomment %}
+
+    <p>{{ register_form.captcha }} </p>
+    <p>{{ register_form.error.captcha }} </p>                                                                                                                                                                                                                                        
     
     <button type="submit">注册</button>
 </form>

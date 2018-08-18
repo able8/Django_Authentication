@@ -12,7 +12,10 @@
         {% csrf_token %}
         <input type="text" name="username" placeholder="用户名">
         <input type="password" name="password" placeholder="密码">
-        <button type="submit">登录</button>
+        <br>
+        {{ loginform.captcha }}
+        {{ loginform.errors.as_text}}
+        <br><button type="submit">登录</button>
     </form>
     {{ error }}
 </body>

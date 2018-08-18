@@ -101,3 +101,57 @@ def change_password(request):
     content = {'changepwdform': changepwdform, 'user':request.user}
     return render(request, 'myauth/change_password.html', content)
 ```
+10. 验证码 CAPTCHA
+- 全自动区分计算机和人类的公开图灵测试（英语：Completely Automated Public Turing test to tell Computers and Humans Apart，简称CAPTCHA），俗称验证码，是一种区分用户是计算机或人的公共全自动程序。
+- https://django-simple-captcha.readthedocs.io/en/latest/usage.html
+    - Install: `pip install  django-simple-captcha`
+    - Add `captcha` to the `INSTALLED_APPS` in your `settings.py`
+    - Run `python manage.py migrate`
+    - Add an entry to your `urls.py`:
+    ```
+    urlpatterns += [
+        url(r'^captcha/', include('captcha.urls')),
+    ]
+    ```
+- Captcha setting 
+```sh
+# https://django-simple-captcha.readthedocs.io/en/latest/advanced.html
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+CAPTCHA_LETTER_ROTATION = (-10, -5)
+CAPTCHA_MATH_CHALLENGE_OPERATOR = '*'
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
+CAPTCHA_FOREGROUND_COLOR = 'blue'
+```
+- 创建带验证码的自定义登录表单
+```python
+from django.contrib.auth.forms import AuthenticationForm
+class CustomLoginForm(AuthenticationForm):
+   captcha = CaptchaField()
+```
+- 登录页面
+```js
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="用户名">
+        <input type="password" name="password" placeholder="密码">
+        <br>
+        {{ loginform.captcha }}
+        {{ loginform.errors.as_text}}
+        <br><button type="submit">登录</button>
+    </form>
+```
+```python
+def login(request):
+    if request.method == 'POST':
+        loginform = CustomLoginForm(data=request.POST)
+        if loginform.is_valid():
+            user = django.contrib.auth.authenticate(request, username=loginform.cleaned_data['username'], password=loginform.cleaned_data['password'])
+            django.contrib.auth.login(request, user)
+            return redirect('myauth:home')
+    else:
+        loginform = CustomLoginForm()
+    
+    content = {'loginform': loginform, 'user':request.user}
+    print(dir(loginform.errors))
+    return render(request, 'myauth/login.html', content)
+```

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 import django.contrib.auth
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
-from .forms import CustomUserForm, CustomEditForm
+from .forms import CustomUserForm, CustomEditForm, CustomLoginForm
 from .models import CommonUserForm
 
 
@@ -48,14 +48,17 @@ def home(request):
 
 def login(request):
     if request.method == 'POST':
-        user = django.contrib.auth.authenticate(request, username=request.POST['username'], password=request.POST['password'])
-        if user is None:
-            return render(request, 'myauth/login.html', {'error': 'userinfo error'})
-        else:
+        loginform = CustomLoginForm(data=request.POST)
+        if loginform.is_valid():
+            user = django.contrib.auth.authenticate(request, username=loginform.cleaned_data['username'], password=loginform.cleaned_data['password'])
             django.contrib.auth.login(request, user)
             return redirect('myauth:home')
     else:
-        return render(request, 'myauth/login.html')
+        loginform = CustomLoginForm()
+    
+    content = {'loginform': loginform, 'user':request.user}
+    print(dir(loginform.errors))
+    return render(request, 'myauth/login.html', content)
 
 def logout(request):
     django.contrib.auth.logout(request)

@@ -1,6 +1,10 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django import forms
+from captcha.fields import CaptchaField
 from django.contrib.auth.models import User
+
+class CustomLoginForm(AuthenticationForm):
+   captcha = CaptchaField()
 
 class CustomEditForm(UserChangeForm):
     nickname = forms.CharField(required=False, max_length=50)
@@ -18,6 +22,7 @@ class CustomEditForm(UserChangeForm):
 class CustomUserForm(UserCreationForm):
     nickname = forms.CharField(required=False, max_length=50)
     birthday = forms.DateField(required=False)
+    captcha = CaptchaField()
 
     class Meta:
         model = User
