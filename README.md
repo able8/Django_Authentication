@@ -87,9 +87,6 @@ def user_center(request):
 ```
 8. 修改个人信息
 9. 修改密码
-
-
-
 ```python
 @login_required(login_url='myauth:login')
 def change_password(request):
@@ -104,5 +101,3 @@ def change_password(request):
     content = {'changepwdform': changepwdform, 'user':request.user}
     return render(request, 'myauth/change_password.html', content)
 ```
-
-
